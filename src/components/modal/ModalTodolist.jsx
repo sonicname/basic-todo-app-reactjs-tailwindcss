@@ -1,8 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Fade } from "react-reveal";
+import { useTodo } from "../../context/todoContext";
+import shortID from "shortid";
 
 const ModalTodolist = ({ open = false, handleClose = () => {} }) => {
+  const { addToListTodo } = useTodo();
+  const inputRef = React.useRef();
   if (typeof document === "undefined") return;
   return ReactDOM.createPortal(
     <div
@@ -50,10 +54,20 @@ const ModalTodolist = ({ open = false, handleClose = () => {} }) => {
               className="p-3 border border-black focus:border-blue-500 rounded-lg font-semibold"
               type="text"
               placeholder="Enter your todo"
-              maxLength={255}
+              maxLength={25}
+              ref={inputRef}
             />
           </div>
-          <button className="mt-5 bg-blue-500 text-white p-3 rounded-lg font-semibold active:scale-90 transition-all">
+          <button
+            onClick={() => {
+              addToListTodo({
+                title: inputRef.current.value,
+                done: false,
+                id: shortID.generate(),
+              });
+            }}
+            className="mt-5 bg-blue-500 text-white p-3 rounded-lg font-semibold active:scale-90 transition-all"
+          >
             Add
           </button>
         </div>

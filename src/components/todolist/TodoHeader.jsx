@@ -2,7 +2,7 @@ import React from "react";
 import { useTodo } from "../../context/todoContext";
 
 const TodoHeader = () => {
-  const { setOpenModal } = useTodo();
+  const { setOpenModal, setListTodo } = useTodo();
 
   return (
     <div className="mt-5 flex items-center">
@@ -14,7 +14,10 @@ const TodoHeader = () => {
         >
           Add new Todo
         </button>
-        <button className="p-3 rounded-lg bg-red-500 text-white font-semibold hover:scale-110 active:scale-90 transition-all">
+        <button
+          onClick={() => setListTodo([])}
+          className="p-3 rounded-lg bg-red-500 text-white font-semibold hover:scale-110 active:scale-90 transition-all"
+        >
           Clear All
         </button>
       </div>

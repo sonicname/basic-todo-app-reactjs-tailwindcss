@@ -2,14 +2,17 @@ import React from "react";
 import { Fade } from "react-reveal";
 import { useTodo } from "../context/todoContext";
 import ModalTodolist from "../components/modal/ModalTodolist";
-import TodoItem from "../components/Todolist/TodoItem";
-import DoneItem from "../components/Todolist/DoneItem";
-import TodoListWrapper from "../components/Todolist/TodoListWrapper";
-import DoneListWrapper from "../components/Todolist/DoneListWrapper";
-import TodoHeader from "../components/Todolist/TodoHeader";
+import TodoItem from "../components/todolist/TodoItem";
+import DoneItem from "../components/todolist/DoneItem";
+import TodoListWrapper from "../components/todolist/TodoListWrapper";
+import DoneListWrapper from "../components/todolist/DoneListWrapper";
+import TodoHeader from "../components/todolist/TodoHeader";
 
 const Todolist = () => {
-  const { openModal, setOpenModal } = useTodo();
+  const { openModal, setOpenModal, listTodo } = useTodo();
+
+  const listTodoNotDone = listTodo.filter((todo) => todo.done === false);
+  const listTodoDone = listTodo.filter((todo) => todo.done);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -23,14 +26,30 @@ const Todolist = () => {
             {/* Head */}
             <TodoHeader />
 
-            <div className="flex flex-col gap-x-3 items-stretch justify-between">
+            <div className="flex flex-col gap-y-3 justify-center">
               <TodoListWrapper>
-                <TodoItem title={"Hello"} />
+                {listTodoNotDone.length > 0 ? (
+                  listTodoNotDone.map((todo) => (
+                    <TodoItem key={todo.id} title={todo.title} id={todo.id} />
+                  ))
+                ) : (
+                  <div className="text-gray-500 text-center">
+                    Todolist is empty
+                  </div>
+                )}
               </TodoListWrapper>
               {/*  */}
 
               <DoneListWrapper>
-                <DoneItem title={"World"} />
+                {listTodoDone.length > 0 ? (
+                  listTodoDone.map((todo) => (
+                    <DoneItem key={todo.id} title={todo.title} id={todo.id} />
+                  ))
+                ) : (
+                  <div className="text-gray-500 text-center">
+                    List done is empty
+                  </div>
+                )}
               </DoneListWrapper>
             </div>
           </div>
